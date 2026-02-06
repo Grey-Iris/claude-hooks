@@ -9,7 +9,7 @@ TARGET_DIR="$HOME/.claude/hooks"
 mkdir -p "$TARGET_DIR"
 
 # Symlink hook directories
-for dir in session post-tool-use; do
+for dir in session post-tool-use pre-tool-use; do
     if [ -d "$SCRIPT_DIR/$dir" ]; then
         ln -sfn "$SCRIPT_DIR/$dir" "$TARGET_DIR/$dir"
         echo "Linked: $dir/ -> $TARGET_DIR/$dir"
@@ -29,6 +29,18 @@ cat << 'EOF'
             "type": "command",
             "command": "~/.claude/hooks/session/tk-session-context.sh 2>/dev/null || true",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pre-tool-use/check-gemini-patterns.sh",
+            "timeout": 10
           }
         ]
       }
