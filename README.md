@@ -24,16 +24,20 @@ Requires: [tasuku](https://github.com/Grey-Iris/tasuku) (`tk` CLI)
 
 ### pre-tool-use/check-gemini-patterns.sh
 
-Blocks deprecated Gemini API patterns before they land in code. Fires on `Write`, `Edit`, and `Bash` tool calls.
+Blocks deprecated Gemini API patterns in code — not in docs. Fires on `Write`, `Edit`, and `Bash` tool calls.
 
 **Catches:**
 - `google-generativeai` (old SDK) — use `google-genai`
 - `gemini-1.5-*`, `gemini-2.0-*`, `gemini-2.5-*` model IDs — use `gemini-3-*`
 - `import google.generativeai` (old import) — use `from google import genai`
 
+**Does not block:**
+- Documentation files (`.md`, `.txt`, `.rst`, `.html`, `.csv`, `.log`) — you can write about deprecated APIs
+- Non-install bash commands (`git commit`, `echo`, `grep`) — you can mention deprecated patterns in commits, searches, etc.
+
 **Smart behavior:**
 - For `Edit`, only scans `new_string` — replacing deprecated patterns with correct ones won't be blocked
-- Denial messages include the correct replacement
+- For `Bash`, only scans install commands (`pip install`, `npm install`, etc.) — not every command that mentions a model name
 
 **Exception:** Set `ALLOW_LEGACY_GEMINI=1` to bypass all checks when you need to work with older models:
 ```bash
