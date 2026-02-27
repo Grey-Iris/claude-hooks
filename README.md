@@ -22,6 +22,12 @@ Compact session context for Claude Code startup. Shows:
 
 Requires: [tasuku](https://github.com/Grey-Iris/tasuku) (`tk` CLI)
 
+### session/workflow-context.sh
+
+Detects if `../workflow-v2/` exists as a sibling repo and surfaces the workflow template paths to Claude on session start. Enables any sibling project to use the multi-agent workflow without per-project setup.
+
+Silently does nothing if workflow-v2 isn't found.
+
 ### pre-tool-use/check-gemini-patterns.sh
 
 Blocks deprecated Gemini API patterns in code — not in docs. Fires on `Write`, `Edit`, and `Bash` tool calls.
@@ -71,6 +77,11 @@ Detects npm/yarn/pip install commands and warns about major version differences.
           {
             "type": "command",
             "command": "~/.claude/hooks/session/tk-session-context.sh 2>/dev/null || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session/workflow-context.sh 2>/dev/null || true",
             "timeout": 5
           }
         ]

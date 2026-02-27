@@ -29,6 +29,11 @@ cat << 'EOF'
             "type": "command",
             "command": "~/.claude/hooks/session/tk-session-context.sh 2>/dev/null || true",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session/workflow-context.sh 2>/dev/null || true",
+            "timeout": 5
           }
         ]
       }
